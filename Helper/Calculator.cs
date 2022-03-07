@@ -44,7 +44,6 @@ namespace DynamicFormula.Helper
         public static bool TriggerChecking(FormulaInfomation formulaInfomation, object objectContainValue)
         {
             ExpressionContext ec = new();
-
             CreateCalculationEngineContext(objectContainValue, formulaInfomation.ConditionVariables, ec);
             var e = ec.CompileGeneric<bool>(formulaInfomation.Condition);
             return e.Evaluate();
@@ -71,29 +70,54 @@ namespace DynamicFormula.Helper
         /// Tạo Context với tham số và giá trị của tham số được lấy trong ObjectContainValue
         /// </summary>
         /// <param name="objectContainValue"></param>
-        /// <param name="formulaVariables"></param>
+        /// <param name="variables"></param>
         /// <param name="context"></param>
-        static void CreateCalculationEngineContext(object objectContainValue, List<VariableInfomation> formulaVariables, ExpressionContext context)
+        static void CreateCalculationEngineContext(object objectContainValue, List<VariableInfomation> variables, ExpressionContext context)
         {
             Dictionary<string, object?>? variableDictionary = PasreObjectContainValueToDictionary(objectContainValue);
             // Chi add 1 lan thoi, add > 1 lan ham do se bi loi ambiguous method
-            bool customFomulaAdded = false;
-            foreach (var item in formulaVariables)
+            var variablesGroups = variables.GroupBy(x => x.Type);
+            foreach (var variableGroup in variablesGroups)
             {
-                if (variableDictionary.ContainsKey(item.Name) && item.Type == VariableType.Variable)
+                switch (variableGroup.Key)
                 {
-                    context.Variables.Add(item.Name, variableDictionary.GetValueOrDefault(item.Name));
+                    case VariableType.Formula:
+                        context.Imports.AddType(typeof(CustomFormula));
+                        foreach (var variable in variableGroup.Distinct())
+                        {
+                            // Lấy tham số là một công thức tính
+                            // Tính toán dựa trên công thức tính
+                            // Đưa vào tham số cùng kết quả.
+                            context.Variables.Add(variable.Name,  CustomFormula.RunExpression(variable.Name, objectContainValue));
+                        }
+                        break;
+                    case VariableType.Variable:
+                        foreach (var variable in variableGroup)
+                        {
+                            context.Variables.Add(variable.Name, variableDictionary.GetValueOrDefault(variable.Name));
+                        }
+                        break;
+                    default:
+                        break;
                 }
-                else if (item.Type == VariableType.Formula && !customFomulaAdded)
-                {
-                    context.Imports.AddType(typeof(CustomFormula));
-                    customFomulaAdded = true;
-                    // Lấy tham số là một công thức tính
-                    // Tính toán dựa trên công thức tính
-                    // Đưa vào tham số cùng kết quả.
-                }
-
             }
+
+            //foreach (var item in formulaVariables)
+            //{
+            //    if (variableDictionary.ContainsKey(item.Name) && item.Type == VariableType.Variable)
+            //    {
+            //        context.Variables.Add(item.Name, variableDictionary.GetValueOrDefault(item.Name));
+            //    }
+            //    else if (item.Type == VariableType.Formula && !customFomulaAdded)
+            //    {
+            //        context.Imports.AddType(typeof(CustomFormula));
+            //        customFomulaAdded = true;
+            //        // Lấy tham số là một công thức tính
+            //        // Tính toán dựa trên công thức tính
+            //        // Đưa vào tham số cùng kết quả.
+            //    }
+
+            //}
         }
 
         /// <summary>
