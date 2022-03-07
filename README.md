@@ -113,6 +113,10 @@ the target Framework version.
 3. Call Api 
 POST: https://localhost:7275/formula
 Model Test: Data/test.json: 
+    ```console
+    Công thức ví dụ 1: TinhPhiBH Nếu package = 'VTA' thì lấy COST + 100000, nếu package <> 'VTA' thì lấy COST + 50000
+    Công thức ví dụ 2: TinhPhiBHNangCao Nếu package = 'VTA' thì lấy TinhPhiBH + 200000, nếu package <> 'VTA' thì lấy COST + 300000
+    ```
  ```json
    {
         "name": "TinhPhiBHNangCao",
@@ -208,4 +212,4 @@ Model Test: Data/test.json:
                 }
         ]
 }
-    ```
+```
