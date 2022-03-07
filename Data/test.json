@@ -1,0 +1,94 @@
+﻿{
+        "name": "TinhPhiBHNangCao",
+        "data": {
+                "cost": 100000,
+                "package": "VTA"
+        },
+        "formula": [
+                {
+                        "Id": "888DF05A-B1F8-4436-A5DF-55D36AAE0C5F",
+                        "Name": "TinhPhiBH",
+                        "DisplayName": "Phi goi bao hiem",
+                        "Formulas": [
+                                {
+                                        "Id": "1EDED4DB-D388-4089-A17B-A15338EF2891",
+                                        "Expression": "Cost +100000",
+                                        "Condition": "Package = \"VTA\"",
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "Cost",
+                                                        "Type": 1
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                },
+                                {
+                                        "Id": "1EDED4DB-D388-4089-A17B-A15338EF2891",
+                                        "Expression": "Cost +50000",
+                                        "Condition": "Package <> \"VTA\"",
+
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "Cost",
+                                                        "Type": 1
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "Id": "53D3FB6E-D3AA-49D0-BABC-E9F9614223BC",
+                        "Name": "TinhPhiBHNangCao",
+                        "DisplayName": "Phi goi bao hiem PLUS",
+                        "Formulas": [
+                                {
+                                        "Id": "7043351A-279C-4E12-BBAD-314B7D6933F5",
+                                        "Expression": "TinhPhiBH + 200000",
+                                        "Condition": "Package = \"VTA\"",
+                                        "IsDefault": false,
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "TinhPhiBH",
+                                                        "Type": 0
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                },
+                                {
+                                        "Id": "30D1399C-1290-4BCE-9681-FB0AB0B905BD",
+                                        "Expression": "TinhPhiBH + 300000",
+                                        "Condition": "Package <> \"VTA\"",
+
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "TinhPhiBH",
+                                                        "Type": 0
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                }
+                        ]
+                }
+        ]
+}
