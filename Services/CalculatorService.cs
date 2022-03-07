@@ -3,15 +3,18 @@ using DynamicFormula.Helper;
 
 namespace DynamicFormula.Services
 {
-    public class CalculatorService:ICalculatorService
+    public class CalculatorService : ICalculatorService
     {
-        public CalculatorService()
+        private readonly ICalculator _calculator;
+
+        public CalculatorService(ICalculator calculator)
         {
-           
+            _calculator = calculator;
         }
-        public double Calculator(string name)
+
+        public async Task<double> Calculator(string name)
         {
-            return CustomFormula.Run(name);
+            return await _calculator.Run(name);
         }
     }
 }

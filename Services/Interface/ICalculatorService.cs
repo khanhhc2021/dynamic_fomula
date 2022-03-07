@@ -5,7 +5,7 @@ namespace DynamicFormula.Services
 {
     public interface ICalculatorService
     {
-        double Calculator(string name);
+        Task<double> Calculator(string name);
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using DynamicFormula.Models;
 using DynamicFormula.Models.Entity;
+using DynamicFormula.Repository;
 using Flee.CalcEngine.PublicTypes;
 using Flee.PublicTypes;
 using Newtonsoft.Json;
@@ -8,32 +9,32 @@ using Newtonsoft.Json.Linq;
 
 namespace DynamicFormula.Helper
 {
-    public static class Calculator
+    public class Calculator : ICalculator
     {
         private const string _atomName = "RESULT";
 
-        //public static object Calculating(FormulaInfomation formulaInfomation, object objectContainValue)
-        //{
-        //        object result = GetResult(foundCalculatorConfig, objectContainValue);
-        //        return CalculatingWithCustomFunction(foundCalculatorConfig, result);
-        //}
+        private readonly ICalculatorConfigRepository _repo;
 
-        /// <summary>
-        /// áp dụng customFunctions được khai báo ở Class CustomFunctions
-        /// </summary>
-        /// <param name="foundCalculatorConfig"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        //public static object CalculatingWithCustomFunction(FormulaInfomation foundCalculatorConfig, object result)
-        //{
-        //    if (string.IsNullOrEmpty(foundCalculatorConfig.CustomFunction))
-        //        return result;
-        //    ExpressionContext context = new ExpressionContext();
-        //    context.Imports.AddType(typeof(CustomFunctions));
-        //    IDynamicExpression e = context.CompileDynamic($"{foundCalculatorConfig.CustomFunction}({result})");
-        //    return e.Evaluate();
-        //}
+        public Calculator(ICalculatorConfigRepository repo)
+        {
+            _repo = repo;
+        }
 
+        public async Task<double> Run(string name)
+        {
+            var r = await RunExpression(name, Example.Datas);
+            return Convert.ToDouble(r);
+        }
+        private async Task<object> RunExpression(string name, object objectContainValue)
+        {
+            var calConfig = await GetFormulaConfig(name);
+            if (calConfig == null) return 0;
+
+            var formular = calConfig.Formulas.FirstOrDefault(formularInfomation => TriggerChecking(formularInfomation, objectContainValue));
+            if (formular == null) return 0;
+
+            return GetResult(formular, objectContainValue);
+        }
 
         /// <summary>
         /// Hàm kiểm tra điều kiện kích hoạt phép tính
@@ -41,7 +42,7 @@ namespace DynamicFormula.Helper
         /// <param name="formula"></param>
         /// <param name="objectContainValue"></param>
         /// <returns></returns>
-        public static bool TriggerChecking(FormulaInfomation formulaInfomation, object objectContainValue)
+        private bool TriggerChecking(FormulaInfomation formulaInfomation, object objectContainValue)
         {
             ExpressionContext ec = new();
             CreateCalculationEngineContext(objectContainValue, formulaInfomation.ConditionVariables, ec);
@@ -55,7 +56,7 @@ namespace DynamicFormula.Helper
         /// <param name="calculatorConfig"></param>
         /// <param name="objectContainValue"></param>
         /// <returns></returns>
-        public static object GetResult(FormulaInfomation formulaInfomation, object objectContainValue)
+        private object GetResult(FormulaInfomation formulaInfomation, object objectContainValue)
         {
             CalculationEngine ce = new();
             ExpressionContext context = new();
@@ -72,10 +73,9 @@ namespace DynamicFormula.Helper
         /// <param name="objectContainValue"></param>
         /// <param name="variables"></param>
         /// <param name="context"></param>
-        static void CreateCalculationEngineContext(object objectContainValue, List<VariableInfomation> variables, ExpressionContext context)
+        private void CreateCalculationEngineContext(object objectContainValue, List<VariableInfomation> variables, ExpressionContext context)
         {
             Dictionary<string, object?>? variableDictionary = PasreObjectContainValueToDictionary(objectContainValue);
-            // Chi add 1 lan thoi, add > 1 lan ham do se bi loi ambiguous method
             var variablesGroups = variables.GroupBy(x => x.Type);
             foreach (var variableGroup in variablesGroups)
             {
@@ -88,7 +88,7 @@ namespace DynamicFormula.Helper
                             // Lấy tham số là một công thức tính
                             // Tính toán dựa trên công thức tính
                             // Đưa vào tham số cùng kết quả.
-                            context.Variables.Add(variable.Name,  CustomFormula.RunExpression(variable.Name, objectContainValue));
+                            context.Variables.Add(variable.Name,  RunExpression(variable.Name, objectContainValue));
                         }
                         break;
                     case VariableType.Variable:
@@ -101,23 +101,6 @@ namespace DynamicFormula.Helper
                         break;
                 }
             }
-
-            //foreach (var item in formulaVariables)
-            //{
-            //    if (variableDictionary.ContainsKey(item.Name) && item.Type == VariableType.Variable)
-            //    {
-            //        context.Variables.Add(item.Name, variableDictionary.GetValueOrDefault(item.Name));
-            //    }
-            //    else if (item.Type == VariableType.Formula && !customFomulaAdded)
-            //    {
-            //        context.Imports.AddType(typeof(CustomFormula));
-            //        customFomulaAdded = true;
-            //        // Lấy tham số là một công thức tính
-            //        // Tính toán dựa trên công thức tính
-            //        // Đưa vào tham số cùng kết quả.
-            //    }
-
-            //}
         }
 
         /// <summary>
@@ -134,6 +117,11 @@ namespace DynamicFormula.Helper
                 .OfType<JValue>()
                 .ToDictionary(jv => jv.Path, jv => jv.Value);
             return dictionary;
+        }
+
+        private async  Task<CalculatorConfig> GetFormulaConfig(string name)
+        {
+            return await _repo.GetCalculatorConfigsByNameAsync(name);
         }
     }
 }
