@@ -1,4 +1,29 @@
-# Flee (Supports .Net Core 2.0)
+# Dynamic Formula (Supports .Net 6)
+ What's new in .NET 6
+
+.NET 6 delivers the final parts of the .NET unification plan that started with [.NET 5](dotnet-5.md). .NET 6 unifies the SDK, base libraries, and runtime across mobile, desktop, IoT, and cloud apps. In addition to this unification, the .NET 6 ecosystem offers:
+
+- **Simplified development**: Getting started is easy. New language features in [C# 10](../../csharp/whats-new/csharp-10.md) reduce the amount of code you need to write. And investments in the web stack and minimal APIs make it easy to quickly write smaller, faster microservices.
+
+- **Better performance**: .NET 6 is the fastest full stack web framework, which lowers compute costs if you're running in the cloud.
+
+- **Ultimate productivity**: .NET 6 and [Visual Studio 2022](/visualstudio/releases/2022/release-notes) provide hot reload, new git tooling, intelligent code editing, robust diagnostics and testing tools, and better team collaboration.
+
+.NET 6 will be [supported for three years](https://dotnet.microsoft.com/platform/support/policy/dotnet-core) as a long-term support (LTS) release.
+
+*Preview* features are disabled by default. They are also not supported for use in production and may be removed in a future version. The new <xref:System.Runtime.Versioning.RequiresPreviewFeaturesAttribute> is used to annotate preview APIs, and a corresponding analyzer alerts you if you're using these preview APIs.
+
+.NET 6 is supported by Visual Studio 2022 and Visual Studio 2022 for Mac (and later versions).
+
+This article does not cover all of the new features of .NET 6. To see all of the new features, and for further information about the features listed in this article, see the [Announcing .NET 6](https://devblogs.microsoft.com/dotnet/announcing-net-6) blog post.
+
+## Performance
+
+.NET 6 includes numerous performance improvements. This section lists some of the improvements&mdash;in [FileStream](#filestream), [profile-guided optimization](#profile-guided-optimization), and [AOT compilation](#crossgen2). For detailed information, see the [Performance improvements in .NET 6](https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-6/) blog post.
+
+
+
+# Dynamic Formula Wraper of Flee (Supports .Net Core 2.0)
  Fast Lightweight Expression Evaluator.
  Convert this project vb.net to c#.
   
@@ -46,6 +71,7 @@ Or via the .NET Core command line interface:
 
 ## License
 Flee is licensed under the LGPL. This means that as long as you dynamically link (ie: add a reference) to the officially released assemblies, you can use it in commercial and non-commercial applications.
+
 ## Building a sample
 
 Build any .NET Core sample using the .NET Core CLI, which is installed with [the .NET Core SDK](https://www.microsoft.com/net/download). Then run
@@ -70,50 +96,7 @@ a specific platform. Other samples and snippets require the .NET Framework
 and will run on Windows platforms, and will need the Developer Pack for
 the target Framework version.
 
-## Creating new samples
-
-If you wish to add a code sample:
-
-1. Your sample **must be part of a buildable project**. Where possible, the projects should build on all platforms supported by .NET Core. Exceptions to this are samples that demonstrate a platform-specific feature or platform-specific tool.
-
-2. Your sample should conform to the [runtime coding style](https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md) to maintain consistency.
-
-    - Additionally, we prefer the use of `static` methods rather than instance methods when demonstrating something that doesn't require instantiating a new object.
-
-3. Your sample should include **appropriate exception handling**. It should handle all exceptions that are likely to be thrown in the context of the sample. For example, a sample that calls the [Console.ReadLine](https://docs.microsoft.com/dotnet/api/system.console.readline) method to retrieve user input should use appropriate exception handling when the input string is passed as an argument to a method. Similarly, if your sample expects a method call to fail, the resulting exception must be handled. Always handle the specific exceptions thrown by the method, rather than base class exceptions such as [Exception](https://docs.microsoft.com/dotnet/api/system.exception) or [SystemException](https://docs.microsoft.com/dotnet/api/system.systemexception).
-
-4. If your sample builds a standalone package, you must include the runtimes used by our CI build system, in addition to any runtimes used by your sample:
-
-    - `win7-x64`
-    - `win8-x64`
-    - `win81-x64`
-    - `ubuntu.16.04-x64`
-
-We will have a CI system in place to build these projects shortly.
-
-To create a sample:
-
-1. File an [issue](https://github.com/dotnet/docs/issues) or add a comment to an existing one that you are working on it.
-2. Write the topic that explains the concepts demonstrated in your sample (example: `docs/standard/linq/where-clause.md`).
-3. Write your sample (example: *WhereClause-Sample1.cs*).
-4. Create a *Program.cs* with a Main entry point that calls your samples. If there is already one there, add the call to your sample:
-
-    ```csharp
-    public class Program
-    {
-        public void Main(string[] args)
-        {
-            WhereClause1.QuerySyntaxExample();
-
-            // Add the method syntax as an example.
-            WhereClause1.MethodSyntaxExample();
-        }
-    }
-    ```
-
-5. Don't check in the solution file if it contains only one project.
-
-To build and run your sample:
+## Run your sample:
 
 1. Go to the sample folder and build to check for errors:
 
@@ -127,6 +110,102 @@ To build and run your sample:
     dotnet run
     ```
 
-3. Add a *README.md* to the root directory of your sample.
+3. Call Api 
+POST: https://localhost:7275/formula
+Model Test: Data/test.json: 
+ ```json
+   {
+        "name": "TinhPhiBHNangCao",
+        "data": {
+                "cost": 100000,
+                "package": "VTA"
+        },
+        "formula": [
+                {
+                        "Id": "888DF05A-B1F8-4436-A5DF-55D36AAE0C5F",
+                        "Name": "TinhPhiBH",
+                        "DisplayName": "Phi goi bao hiem",
+                        "Formulas": [
+                                {
+                                        "Id": "1EDED4DB-D388-4089-A17B-A15338EF2891",
+                                        "Expression": "Cost +100000",
+                                        "Condition": "Package = \"VTA\"",
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "Cost",
+                                                        "Type": 1
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                },
+                                {
+                                        "Id": "1EDED4DB-D388-4089-A17B-A15338EF2891",
+                                        "Expression": "Cost +50000",
+                                        "Condition": "Package <> \"VTA\"",
 
-   This should include a brief description of the code, and refer people to the article that references the sample.
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "Cost",
+                                                        "Type": 1
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                }
+                        ]
+                },
+                {
+                        "Id": "53D3FB6E-D3AA-49D0-BABC-E9F9614223BC",
+                        "Name": "TinhPhiBHNangCao",
+                        "DisplayName": "Phi goi bao hiem PLUS",
+                        "Formulas": [
+                                {
+                                        "Id": "7043351A-279C-4E12-BBAD-314B7D6933F5",
+                                        "Expression": "TinhPhiBH + 200000",
+                                        "Condition": "Package = \"VTA\"",
+                                        "IsDefault": false,
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "TinhPhiBH",
+                                                        "Type": 0
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                },
+                                {
+                                        "Id": "30D1399C-1290-4BCE-9681-FB0AB0B905BD",
+                                        "Expression": "TinhPhiBH + 300000",
+                                        "Condition": "Package <> \"VTA\"",
+
+                                        "ExpressionVariables": [
+                                                {
+                                                        "Name": "TinhPhiBH",
+                                                        "Type": 0
+                                                }
+                                        ],
+                                        "ConditionVariables": [
+                                                {
+                                                        "Name": "Package",
+                                                        "Type": 1
+                                                }
+                                        ]
+                                }
+                        ]
+                }
+        ]
+}
+    ```
