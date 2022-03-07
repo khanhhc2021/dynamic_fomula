@@ -1,7 +1,4 @@
-﻿using System;
-using DynamicFormula.Models;
-using DynamicFormula.Models.Entity;
-using Newtonsoft.Json;
+﻿using DynamicFormula.Models.Entity;
 
 namespace DynamicFormula.Helper
 {
@@ -9,54 +6,56 @@ namespace DynamicFormula.Helper
     {
         public static double Run(string name)
         {
-
-            var calConfig = GetFormulaConfig(name);
             Console.WriteLine($"CONG_THUC : {name}");
-            var r = RunExpression(name);
+            var r = RunExpression(name, Example.Datas);
             Console.WriteLine($"KET_QUA : {r}");
             return r;
-
         }
-        public static double RunExpression(string name)
+        public static double RunExpression(string name, object objectContainValue)
         {
-            double result = 0;
             Console.WriteLine($"Expression : {name} ......");
             var calConfig = GetFormulaConfig(name);
             if (calConfig == null) return 0;
-            foreach (var f in calConfig.Formulas)
-            {
-                var conditions = f.ConditionVariables.Where(x => x.Type == VariableType.Formula);
-                foreach (var trigger in conditions)
-                {
-                    f.Condition = f.Condition.Replace(trigger.Name, "RunExpression(\"" + trigger.Name + "\")");
-                }
-              
-                Console.WriteLine($"Kiem tra dieu kien : {f.Condition}");
-                bool checkCondition = true;
-                if (!string.IsNullOrEmpty(f.Condition))
-                    checkCondition = Calculator.TriggerChecking(f, Example.Datas);
-                Console.WriteLine($"Ket qua Kiem tra dieu kien : {f.Condition} : {checkCondition}");
-                if (checkCondition)
-                {
-                    var expression = f.ExpressionVariables.Where(x => x.Type == VariableType.Formula);
-                    foreach (var exp in expression)
-                    {
-                        f.Expression = f.Expression.Replace(exp.Name, "RunExpression(\"" + exp.Name + "\")");
-                    }
-                    Console.WriteLine($"FLEE RUNNING {f.Expression}");
-                    Console.WriteLine($"values : {Example.Datas}");
-                    string expresstion = f.Expression;
-                    var r = Calculator.GetResult(f, Example.Datas);
 
-                    Console.WriteLine();
-                    double d = 0;
-                    d = Convert.ToDouble(r);
-                    Console.WriteLine($"result {f.Expression}: {d}");
-                    result = d;
-                    return result;
-                }
-            }
-            return result;
+            var formular = calConfig.Formulas
+                .FirstOrDefault(formularInfomation => Calculator.TriggerChecking(formularInfomation, objectContainValue));
+            if (formular == null) return 0;
+
+            return Convert.ToDouble(Calculator.GetResult(formular, objectContainValue));
+
+            //foreach (var f in calConfig.Formulas)
+            //{
+            //    var conditions = f.ConditionVariables.Where(x => x.Type == VariableType.Formula);
+            //    foreach (var trigger in conditions)
+            //    {
+            //        f.Condition = f.Condition.Replace(trigger.Name, "RunExpression(\"" + trigger.Name + "\")");
+            //    }
+              
+            //    Console.WriteLine($"Kiem tra dieu kien : {f.Condition}");
+            //    bool checkCondition = true;
+            //    if (!string.IsNullOrEmpty(f.Condition))
+            //        checkCondition = Calculator.TriggerChecking(f, Example.Datas);
+            //    Console.WriteLine($"Ket qua Kiem tra dieu kien : {f.Condition} : {checkCondition}");
+            //    if (checkCondition)
+            //    {
+            //        var expression = f.ExpressionVariables.Where(x => x.Type == VariableType.Formula);
+            //        foreach (var exp in expression)
+            //        {
+            //            f.Expression = f.Expression.Replace(exp.Name, "RunExpression(\"" + exp.Name + "\")");
+            //        }
+            //        Console.WriteLine($"FLEE RUNNING {f.Expression}");
+            //        Console.WriteLine($"values : {Example.Datas}");
+            //        string expresstion = f.Expression;
+            //        var r = Calculator.GetResult(f, Example.Datas);
+
+            //        Console.WriteLine();
+            //        double d = 0;
+            //        d = Convert.ToDouble(r);
+            //        Console.WriteLine($"result {f.Expression}: {d}");
+            //        result = d;
+            //        return result;
+            //    }
+            //}
         }
 
         //// Declare a function that takes a variable number of arguments
