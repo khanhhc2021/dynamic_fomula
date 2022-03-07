@@ -9,19 +9,18 @@ namespace DynamicFormula.Helper
             Console.WriteLine($"CONG_THUC : {name}");
             var r = RunExpression(name, Example.Datas);
             Console.WriteLine($"KET_QUA : {r}");
-            return r;
+            return Convert.ToDouble(r);
         }
-        public static double RunExpression(string name, object objectContainValue)
+        public static object RunExpression(string name, object objectContainValue)
         {
             Console.WriteLine($"Expression : {name} ......");
             var calConfig = GetFormulaConfig(name);
             if (calConfig == null) return 0;
 
-            var formular = calConfig.Formulas
-                .FirstOrDefault(formularInfomation => Calculator.TriggerChecking(formularInfomation, objectContainValue));
+            var formular = calConfig.Formulas.FirstOrDefault(formularInfomation => Calculator.TriggerChecking(formularInfomation, objectContainValue));
             if (formular == null) return 0;
 
-            return Convert.ToDouble(Calculator.GetResult(formular, objectContainValue));
+            return Calculator.GetResult(formular, objectContainValue);
 
             //foreach (var f in calConfig.Formulas)
             //{
