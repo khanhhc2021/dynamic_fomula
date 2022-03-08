@@ -26,7 +26,8 @@ This article does not cover all of the new features of .NET 6. To see all of the
 # Dynamic Formula Wraper of Flee (Supports .Net Core 2.0)
  Fast Lightweight Expression Evaluator.
  Convert this project vb.net to c#.
-  
+# Workflow
+![alt text](workflow.png)  
  ## Project Description
 Flee is an expression parser and evaluator for the .NET framework. It allows you to compute the value of string expressions such as sqrt(a^2 + b^2) at runtime. It uses a custom compiler, strongly-typed expression language, and lightweight codegen to compile expressions directly to IL. This means that expression evaluation is extremely fast and efficient.
 
