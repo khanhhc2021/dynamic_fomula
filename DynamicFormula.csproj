@@ -31,4 +31,7 @@
     <Folder Include="Services\Interface\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Data\test_custom_function.json" />
+  </ItemGroup>
 </Project>

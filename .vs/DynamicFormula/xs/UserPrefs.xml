@@ -1,36 +1,50 @@
 ﻿<Properties StartupConfiguration="{221D0CC0-8B88-442B-8916-CF9BF65BD792}|Default">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.DynamicFormula PreferredExecutionTarget="/Applications/Safari.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/khanhhuynh/Documents/PROJECT/GIT_PTISAIGON_SERVER/INS_CORE/dynamic_formula/dynamic_fomula/Helper/Calculator.cs" relfile="Helper/Calculator.cs" line="49" column="1" />
       <Breakpoint file="/Users/khanhhuynh/Documents/PROJECT/GIT_PTISAIGON_SERVER/INS_CORE/dynamic_formula/dynamic_fomula/Controllers/FormularController.cs" relfile="Controllers/FormularController.cs" line="25" column="1" />
+      <Breakpoint file="/Users/khanhhuynh/Documents/PROJECT/GIT_PTISAIGON_SERVER/INS_CORE/dynamic_formula/dynamic_fomula/Services/CalculatorService.cs" relfile="Services/CalculatorService.cs" line="33" column="1" />
+      <Breakpoint file="/Users/khanhhuynh/Documents/PROJECT/GIT_PTISAIGON_SERVER/INS_CORE/dynamic_formula/dynamic_fomula/Services/CalculatorService.cs" relfile="Services/CalculatorService.cs" line="45" column="1" />
+      <Breakpoint file="/Users/khanhhuynh/Documents/PROJECT/GIT_PTISAIGON_SERVER/INS_CORE/dynamic_formula/dynamic_fomula/Services/CalculatorService.cs" relfile="Services/CalculatorService.cs" line="32" column="1" />
+      <Breakpoint file="/Users/khanhhuynh/Documents/PROJECT/GIT_PTISAIGON_SERVER/INS_CORE/dynamic_formula/dynamic_fomula/Services/CalculatorService.cs" relfile="Services/CalculatorService.cs" line="34" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Models/Entity/VariableInfomation.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Services/CalculatorService.cs">
     <Files>
-      <File FileName="Models/Enums.cs" Line="11" Column="1" />
-      <File FileName="Models/Entity/VariableInfomation.cs" Line="21" Column="22" />
-      <File FileName="Helper/Calculator.cs" Line="49" Column="74" />
-      <File FileName="Services/CalculatorService.cs" Line="7" Column="6" />
-      <File FileName="Helper/CustomFormula.cs" Line="51" Column="41" />
-      <File FileName="Program.cs" Line="4" Column="72" />
+      <File FileName="Models/Entity/VariableInfomation.cs" Line="24" Column="48" />
+      <File FileName="Services/CalculatorService.cs" Line="88" Column="61" />
+      <File FileName="Program.cs" Line="9" Column="41" />
       <File FileName="appsettings.json" Line="1" Column="1" />
       <File FileName="ViewModels/TestData.cs" Line="4" Column="26" />
       <File FileName="Example.cs" Line="1" Column="1" />
       <File FileName="ViewModels/FormularPostModels.cs" Line="1" Column="1" />
-      <File FileName="Controllers/FormulaController.cs" Line="3" Column="32" />
-      <File FileName="Models/Entity/CalculatorConfig.cs" Line="1" Column="1" />
-      <File FileName="Models/Entity/FormulaInfomation.cs" Line="1" Column="1" />
+      <File FileName="Controllers/FormulaController.cs" Line="28" Column="49" />
+      <File FileName="Models/Entity/CalculatorConfig.cs" Line="15" Column="23" />
+      <File FileName="Models/Entity/FormulaInfomation.cs" Line="18" Column="10" />
+      <File FileName="README.md" Line="1" Column="1" />
+      <File FileName="Models/Entity/FormulaMasterData.cs" Line="6" Column="41" />
+      <File FileName="Data/test_masterdata.json" Line="23" Column="40" />
+      <File FileName="Data/test.json" Line="1" Column="1" />
+      <File FileName="Services/Interface/ICalculatorService.cs" Line="8" Column="26" />
+      <File FileName="Models/Enums.cs" Line="1" Column="1" />
+      <File FileName="Interfaces/ICalculator.cs" Line="8" Column="1" />
+      <File FileName="Repository/ICalculatorConfigRepository.cs" Line="1" Column="1" />
+      <File FileName="Helper/CustomFunction.cs" Line="28" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="DynamicFormula" expanded="True">
             <Node name="DynamicFormula" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Data" expanded="True" />
+              <Node name="Helper" expanded="True" />
+              <Node name="Interfaces" expanded="True" />
               <Node name="Models" expanded="True">
                 <Node name="Entity" expanded="True" />
+              </Node>
+              <Node name="Repository" expanded="True" />
+              <Node name="Services" expanded="True">
+                <Node name="Interface" expanded="True" />
               </Node>
               <Node name="ViewModels" expanded="True" />
             </Node>
@@ -46,5 +60,8 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.DynamicFormula PreferredExecutionTarget="/Applications/Safari.app" />
 </Properties>

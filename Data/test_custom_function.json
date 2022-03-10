@@ -1,0 +1,41 @@
+﻿{
+    "name": "TinhPhiBH",
+    "data": {
+        "cost": 100000,
+        "package": "VTA",
+        "benifits": [ "B1", "B2", "B3" ],
+        "subcost": [ 10000, 20000, 30000 ]
+    },
+    "formula": [
+        {
+            "Name": "TinhPhiBH",
+            "Formulas": [
+                {
+                    "Id": "1EDED4DB-D388-4089-A17B-A15338EF2891",
+                    "Expression": "Count(benifits) + SUM(subcost)",
+                    "Condition": "Package = \"VTA\"",
+                    "ExpressionVariables": [
+                        {
+                            "Name": "Cost",
+                            "Type": 1
+                        },
+                        {
+                            "Name": "Benifits",
+                            "Type": 1
+                        },
+                        {
+                            "Name": "SubCost",
+                            "Type": 1
+                        }
+                    ],
+                    "ConditionVariables": [
+                        {
+                            "Name": "Package",
+                            "Type": 1
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

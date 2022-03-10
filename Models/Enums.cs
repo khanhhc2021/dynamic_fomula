@@ -6,5 +6,12 @@ namespace DynamicFormula.Models
         Formula,
         Variable
     }
+
+    public enum FormulaMasterDataType
+    {
+        Funtion,
+        Variable,
+        Formula
+    }
 }
 

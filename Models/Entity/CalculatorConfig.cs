@@ -12,7 +12,7 @@ namespace DynamicFormula.Models.Entity
         /// <summary>
         /// Tên hiển thị của phép tính
         /// </summary>
-        public string DisplayName { get;  set; }
+        public string? DisplayName { get;  set; }
 
         /// <summary>
         /// Tên phép tính

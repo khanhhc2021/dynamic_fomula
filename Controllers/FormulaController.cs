@@ -1,4 +1,5 @@
-﻿using DynamicFormula.Services;
+﻿using DynamicFormula.Helper;
+using DynamicFormula.Services;
 using DynamicFormula.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,12 +20,15 @@ public class FormulaController : ControllerBase
     }
 
     [HttpPost(Name = "calculate")]
-    public double Post(FormularPostModels values)
+
+    public async Task<double> PostAsync(FormularPostModels values)
     {
         Example.Datas = values.Data;
         Example.Formulas = values.Formula;
-        var result = _calculatorService.Calculator(values.Name);
+        var result = await _calculatorService.Calculator(values.Name);
         return result;
     }
+
+
 }
 

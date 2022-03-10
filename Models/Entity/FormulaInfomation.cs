@@ -16,10 +16,6 @@ namespace DynamicFormula.Models.Entity
             ExpressionVariables = new List<VariableInfomation>();
             ConditionVariables = new List<VariableInfomation>();
         }
-        /// <summary>
-        /// Ten
-        /// </summary>
-        public string Id { get; set; }
 
         /// <summary>
         /// Công thức
