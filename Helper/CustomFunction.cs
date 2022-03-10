@@ -19,9 +19,9 @@ namespace DynamicFormula.Helper
         {
             return RoundBase((decimal)value, _ROUND_PLACE, 2);
         }
-        public static decimal Sum(double value)
+        public static decimal Sum(params double[] value)
         {
-            return RoundBase((decimal)value, _ROUND_PLACE, 2);
+            return RoundBase((decimal)value.Sum(), _ROUND_PLACE, 2);
         }
         //type = 0: UP, 1: DOWN, 2: DEFAULT
         private static decimal RoundBase(decimal input, int place, int type)

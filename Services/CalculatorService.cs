@@ -36,14 +36,24 @@ namespace DynamicFormula.Services
         }
         private async Task<object> RunExpression(string name, object objectContainValue)
         {
+            //seeddata
+            var seedData = new SeedData.SeedDataModel();
+            objectContainValue = seedData.SalesProducts;
+            var calConfig = seedData.CalculatorConfigs.FirstOrDefault();
+
             Console.WriteLine($"RunExpression: {name}");
-            var calConfig = await GetFormulaConfig(name);
+            //var calConfig = await GetFormulaConfig(name);
+            double total = 0;
             if (calConfig == null) return 0;
 
-            var formular = calConfig.Formulas.FirstOrDefault(formularInfomation => TriggerChecking(formularInfomation, objectContainValue));
-            if (formular == null) return 0;
+            var formulars = calConfig.Formulas.Where(formularInfomation => TriggerChecking(formularInfomation, objectContainValue));
+            if (formulars.Any()) return 0;
 
-            return GetResult(formular, objectContainValue);
+            foreach (var item in formulars)
+            {
+                total += (double)(GetResult(item, objectContainValue));
+            }
+            return total;
         }
 
         /// <summary>
@@ -139,7 +149,7 @@ namespace DynamicFormula.Services
                 .Descendants()
                 .OfType<JValue>()
                 .ToDictionary(jv => jv.Path, jv => jv.Value);
-            return obj;
+            return dictionary;
         }
 
         private async Task<CalculatorConfig> GetFormulaConfig(string name)

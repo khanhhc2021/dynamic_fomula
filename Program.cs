@@ -1,7 +1,12 @@
-﻿using DynamicFormula.Services;
+﻿using DynamicFormula;
+using DynamicFormula.Helper;
+using DynamicFormula.Repository;
+using DynamicFormula.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<ICalculatorService, CalculatorService>();
+//builder.Services.AddSingleton<ICalculator, Calculator>();
+builder.Services.AddSingleton<ICalculatorConfigRepository, CalculatorConfigRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
