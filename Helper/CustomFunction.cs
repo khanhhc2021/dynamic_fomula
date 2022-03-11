@@ -34,11 +34,11 @@ namespace DynamicFormula.Helper
             return Math.Round(input, _ROUND_PLACE);
         }
 
-        public static decimal Sum(object arg)
+        public static double Sum(object arg)
         {
-            decimal[] arr = ((IEnumerable)arg).Cast<object>().Select(x => Convert.ToDecimal(x)).ToArray();
-            decimal sum = 0;
-            foreach (decimal i in arr)
+            double[] arr = ((IEnumerable)arg).Cast<object>().Select(x => Convert.ToDouble(x)).ToArray();
+            double sum = 0;
+            foreach (double i in arr)
                 sum += i;
 
             return sum;
@@ -48,6 +48,16 @@ namespace DynamicFormula.Helper
         {
             string[] arr = ((IEnumerable)arg).Cast<object>().Select(x => x.ToString()).ToArray();
             return arr.Count();
+        }
+
+        public static bool Contains(object arg,string v)
+        {
+             string[] arr = ((IEnumerable)arg).Cast<object>().Select(x => x.ToString()).ToArray();
+            if (Array.IndexOf(arr, v) >= 0)
+            {
+                return true;
+            }
+            return false;
         }
 
     }

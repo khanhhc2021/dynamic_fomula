@@ -6,10 +6,10 @@ namespace DynamicFormula.ViewModels
 
         public decimal Cost { get; set; }
 
-        public string Package { get; set; }
+        public string Code { get; set; }
 
-        public List<string>  Benifits { get; set; }
-        public List<decimal> SubCost { get; set; }
+        public List<string> Products_Code { get; set; }
+        public List<decimal> Products_ElementaryProducts_Cost { get; set; }
 
     }
 }

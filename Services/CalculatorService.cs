@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using DynamicFormula.Helper;
 using DynamicFormula.Models;
 using DynamicFormula.Models.Entity;
@@ -38,20 +39,21 @@ namespace DynamicFormula.Services
         {
             //seeddata
             var seedData = new SeedData.SeedDataModel();
-            objectContainValue = seedData.SalesProducts;
-            var calConfig = seedData.CalculatorConfigs.FirstOrDefault();
+            //objectContainValue = seedData.SalesProducts.FirstOrDefault();
+
+            //var calConfig = seedData.CalculatorConfigs.FirstOrDefault();
 
             Console.WriteLine($"RunExpression: {name}");
-            //var calConfig = await GetFormulaConfig(name);
+            var calConfig = await GetFormulaConfig(name);
             double total = 0;
             if (calConfig == null) return 0;
 
             var formulars = calConfig.Formulas.Where(formularInfomation => TriggerChecking(formularInfomation, objectContainValue));
-            if (formulars.Any()) return 0;
+            if (!formulars.Any()) return 0;
 
             foreach (var item in formulars)
             {
-                total += (double)(GetResult(item, objectContainValue));
+                total += Convert.ToDouble(GetResult(item, objectContainValue));
             }
             return total;
         }
@@ -103,7 +105,7 @@ namespace DynamicFormula.Services
                 switch (variableGroup.Key)
                 {
                     case VariableType.Formula:
-                     
+
                         foreach (var variable in variableGroup.Distinct())
                         {
                             // Lấy tham số là một công thức tính
@@ -115,18 +117,8 @@ namespace DynamicFormula.Services
                     case VariableType.Variable:
                         foreach (var variable in variableGroup)
                         {
-                            List<object> arr;
-                            //Kiem tra xem variable do co phai lai array ko?
-                            try
-                            {
-                                arr = JsonConvert.DeserializeObject<List<object>>(variableDictionary.GetValueOrDefault(variable.Name).ToString());
-                                context.Variables.Add(variable.Name, arr);
-                            }
-                            catch //Neu ko phai array thi add danng variable binh thuong
-                            {
-                                context.Variables.Add(variable.Name, variableDictionary.GetValueOrDefault(variable.Name));
-                            }
-
+                            var values = variableDictionary.GetValueOrDefault(variable.Name);
+                            context.Variables.Add(variable.Name, values);
                         }
                         break;
                     default:
@@ -143,13 +135,51 @@ namespace DynamicFormula.Services
         /// <returns></returns>
         static Dictionary<string, object?> PasreObjectContainValueToDictionary(object value)
         {
+            //var jsonObject = JsonConvert.SerializeObject(value);
+            //Dictionary<string, object> obj = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonObject);
+            ////var dictionary = JObject.Parse(jsonObject)
+            ////    .Descendants()
+            ////    .OfType<JValue>()
+            ////    .ToDictionary(jv => jv.Path, jv => jv.Value);
+            //return obj;
             var jsonObject = JsonConvert.SerializeObject(value);
             Dictionary<string, object> obj = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonObject);
             var dictionary = JObject.Parse(jsonObject)
                 .Descendants()
                 .OfType<JValue>()
                 .ToDictionary(jv => jv.Path, jv => jv.Value);
-            return dictionary;
+            var regex = new Regex(Regex.Escape(","));
+
+            var ndlv1 = dictionary.GroupBy(x => Regex.Replace(x.Key, @"\[\d\]", "")).Select(x => x).ToList();
+            Dictionary<string, object?> finalList = new Dictionary<string, object?>();
+
+            foreach (var item in ndlv1)
+            {
+                if (item.Count() == 1)
+                {
+                    finalList.Add(item.Key.Replace(".", "_"), item.FirstOrDefault().Value);
+                }
+                else
+                {
+                    var key = item.Key.Replace(".", "_");
+                    List<object> values = new List<object>();
+                    var ndlv2 = item.GroupBy(x => Regex.Replace(x.Key, @"\[\d\]", "")).Select(x => x).ToList();
+                    foreach (var item2 in ndlv2)
+                    {
+                        if (item2.Count() == 1)
+                        {
+                            finalList.Add(item2.Key, item2.FirstOrDefault().Value);
+                        }
+                        else
+                        {
+                            foreach (var i in item2)
+                                if (i.Value != null) values.Add(i.Value);
+                        }
+                    }
+                    finalList.Add(key, values);
+                }
+            }
+            return finalList;
         }
 
         private async Task<CalculatorConfig> GetFormulaConfig(string name)
